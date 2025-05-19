@@ -1,0 +1,5 @@
+# Terraform
+.terraform/          # Ignora todo el directorio de caché (incluye providers)
+*.tfstate            # Ignora archivos de estado
+*.tfstate.backup     # Ignora backups de estado
+*.tfvars             # Ignora archivos con variables sensibles
