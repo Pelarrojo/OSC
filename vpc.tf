@@ -1,6 +1,7 @@
+
 # 1. Crea una VPC dedicada para EKS
 resource "aws_vpc" "eks_vpc" {
-  cidr_block           = "10.0.0.0/16"  # Rango de IPs privadas
+  cidr_block           = "10.0.0.0/16" 
   enable_dns_support   = true
   enable_dns_hostnames = true
 
@@ -11,14 +12,14 @@ resource "aws_vpc" "eks_vpc" {
 
 # 2. Subnets Públicas (para recursos accesibles desde Internet)
 resource "aws_subnet" "public_subnets" {
-  count             = 3  # Creará 3 subnets en distintas AZs
+  count             = 3  
   vpc_id            = aws_vpc.eks_vpc.id
-  cidr_block        = "10.0.${count.index + 1}.0/24"  # Ej: 10.0.1.0/24, 10.0.2.0/24, etc.
-  availability_zone = "us-east-1${element(["a", "b", "c"], count.index)}"  # AZs: us-east-1a, us-east-1b, us-east-1c
+  cidr_block        = "10.0.${count.index + 1}.0/24" 
+  availability_zone = "us-east-1${element(["a", "b", "c"], count.index)}" 
 
   tags = {
     Name = "subnet-public-${count.index + 1}"
-    "kubernetes.io/role/elb" = "1"  # Necesario para EKS
+    "kubernetes.io/role/elb" = "1"  
   }
 }
 
