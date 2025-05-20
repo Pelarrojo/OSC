@@ -34,11 +34,24 @@ Inicializa el entorno de Terraform
 
 
 terraform init
-
 terraform plan
-
 terraform apply
+aws eks update-kubeconfig --name ecommerce-cluster --region us-east-1
+kubectl apply -f deployment.yaml -f service.yaml
 
+Cuando el pod no puede acceder a la imagen es porque no estaba subida a un repositorio, en nuestro caso un ECR
+
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 997733898678.dkr.ecr.us-east-1.amazonaws.com
+docker tag frontend-ecommerce 997733898678.dkr.ecr.us-east-1.amazonaws.com/frontend-ecommerce:latest
+docker push 997733898678.dkr.ecr.us-east-1.amazonaws.com/frontend-ecommerce:latest
+kubectl apply -f deployment.yaml
+kubectl get pods -o wide
+
+Se cambia el contexto para que se levante en la nube y no local con kind utilizando el comando:
+kubectl config use-context arn:aws:eks:us-east-1:997733898678:cluster/ecommerce-cluster
+
+Para ingresar a la app se accede mediante el dns del load balancer:
+http://a911e3b82fd7a4d6bb90aa8ae20238b3-1081746352.us-east-1.elb.amazonaws.com
 
 ## 🌐 Red (VPC)
 CIDR principal: 10.0.0.0/16

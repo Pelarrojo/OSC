@@ -1,13 +1,12 @@
+# service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: frontend-service
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: alb
 spec:
-  type: NodePort
-  selector:
-    app: frontend
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30080
-      
